@@ -4,6 +4,12 @@
 
 [Short variable declarations](#short-variable-declarations)
 
+[String literal](#string-literal)
+
+[Constants](#constants)
+
+[Iota](#iota)
+
 [Custom types](#custom-types)
 
 [Type conversion](#type-conversion)
@@ -64,6 +70,99 @@ func main() {
 Here, `x := 42` is a shorthand for variable declaration `var x = 42`.
 
 In some contexts such as the initializers for "if", "for", or "switch" statements, they can be used to declare local temporary variables.
+
+## String literal
+
+There are two types of string literals: raw string literals and interpreted string literals.
+
+Raw string literals are character sequences between back quotes, in particular, backslashes have no special meaning and the string may contain newlines.
+
+Interpreted string literals are character sequences between double quotes, as in "bar". Within the quotes, any character may appear except newline and unescaped double quote.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+  x := "James bond"
+  fmt.Println(x) // James bond
+
+  y := `"James bond"`
+  fmt.Println(y) // "James bond"
+
+  z := `{
+    "fruit": "Apple",
+    "size": "Large",
+    "color": "Red"
+  }`
+  fmt.Println(z)
+  /*
+  {
+    "fruit": "Apple",
+    "size": "Large",
+    "color": "Red"
+  }
+  */
+}
+
+```
+
+## Constants
+
+```go
+package main
+
+import "fmt"
+
+// x, y, z are untyped constants
+// a is a typed constant
+const (
+  x     = 42
+  y     = "James bond"
+  z     = 256.5
+  a int = 25
+)
+
+func main() {
+  fmt.Printf("%T\n", x) // int
+  fmt.Printf("%T\n", y) // string
+  fmt.Printf("%T\n", z) // float64
+  fmt.Printf("%T\n", a) // int
+}
+```
+
+## Iota
+
+Within a constant declaration, the predeclared identifier iota represents successive untyped integer constants. This permits light-weight declaration of sequential values.
+
+```go
+package main
+
+import "fmt"
+
+const (
+  x = iota
+  y
+  z
+)
+
+const (
+  a = iota
+  b
+  c
+)
+
+func main() {
+  fmt.Println(x) // 0
+  fmt.Println(y) // 1
+  fmt.Println(z) // 2
+
+  fmt.Println(a) // 0
+  fmt.Println(b) // 1
+  fmt.Println(c) // 2
+}
+```
 
 ## Custom types
 
