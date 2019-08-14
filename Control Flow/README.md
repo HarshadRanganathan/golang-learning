@@ -12,7 +12,7 @@
 
 ## For statements
 
-A "for" statement with a ForClause is also controlled by its condition, but additionally it may specify an init and a post statement, such as an assignment, an increment or decrement statement.
+A "for" statement with a "for" clause is also controlled by its condition, but additionally it may specify an init and a post statement, such as an assignment, an increment or decrement statement.
 
 ```go
 package main
@@ -40,6 +40,30 @@ func main() {
     i++
   }
 }
+```
+
+A "for" statement with a "range" clause iterates through all entries of an array, slice, string or map, or values received on a channel.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+  for i, v := range "hello" {
+    fmt.Printf("%v %v\n", i, v) // prints index and rune (ascii)
+  }
+}
+```
+
+Output:
+
+```text
+0 104
+1 101
+2 108
+3 108
+4 111
 ```
 
 ## Break statements
@@ -160,7 +184,7 @@ func main() {
 
 Output:
 
-```
+```text
 Topical fruit
 Fruits are a good source of vitamins and minerals
 ```
