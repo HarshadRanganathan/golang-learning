@@ -1,10 +1,16 @@
 [For statements](#for-statements)
 
+- [While condition](#while-condition)
+
+- [Range clause](#range-clause)
+
 [Break statements](#break-statements)
 
 [Continue statements](#continue-statements)
 
 [If statements](#if-statements)
+
+- [Simple statement with condition](#simple-statement-with-condition)
 
 [Switch statements](#switch-statements)
 
@@ -26,6 +32,8 @@ func main() {
 }
 ```
 
+### While condition
+
 For is Go's "while".
 
 ```go
@@ -41,6 +49,8 @@ func main() {
   }
 }
 ```
+
+### Range clause
 
 A "for" statement with a "range" clause iterates through all entries of an array, slice, string or map, or values received on a channel.
 
@@ -123,6 +133,8 @@ func main() {
   }
 }
 ```
+
+### Simple statement with condition
 
 The expression may be preceded by a simple statement, which executes before the expression is evaluated.
 

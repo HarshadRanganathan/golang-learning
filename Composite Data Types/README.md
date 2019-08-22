@@ -2,9 +2,35 @@
 
 [Slice](#slice)
 
+- [Slice expressions](#slice-expressions)
+
+- [Appending elements](#appending-elements)
+
+- [Removing elements](#removing-elements)
+
+- [Slice Iteration](#slice-iteration)
+
+- [Memory allocation](#memory-allocation)
+
 [Map](#map)
 
+- [Checking if a key is present](#checking-if-a-key-is-present)
+
+- [Adding entries](#adding-entries)
+
+- [Removing entries](#removing-entries)
+
+- [Map Iteration](#map-iteration)
+
 [Struct](#struct)
+
+- [Struct in map](#struct-in-map)
+
+- [Embedded fields](#embedded-fields)
+
+- [Promoted fields](#promoted-fields)
+
+- [Anonymous structures](#anonymous-structures)
 
 ## Array
 
@@ -52,6 +78,8 @@ func main() {
 }
 ```
 
+### Slice expressions
+
 Slice expressions construct a substring or slice from a string, array, pointer to array, or slice.
 
 ```go
@@ -67,6 +95,8 @@ func main() {
   fmt.Println(x[0:5]) // [1 2 3 4 5]
 }
 ```
+
+### Appending elements
 
 The variadic function `append` appends zero or more values x to s of type S, which must be a slice type, and returns the resulting slice, also of type S.
 
@@ -85,6 +115,8 @@ func main() {
 }
 ```
 
+### Removing elements
+
 In order to remove elements from a slice and preserve the order, make use of the built in `append` function.
 
 ```go
@@ -100,6 +132,8 @@ func main() {
   fmt.Println(y) // [6 7 8 9 10]
 }
 ```
+
+### Slice Iteration
 
 Iterate the slice using the `range clause` in a for loop.
 
@@ -118,6 +152,8 @@ func main() {
   }
 }
 ```
+
+### Memory allocation
 
 You can make a slice using the built-in `make` function which takes in the length and capacity of the slice.
 
@@ -175,6 +211,8 @@ func main() {
 }
 ```
 
+### Checking if a key is present
+
 To check if the map contains a key, make use of `Index expressions`.
 
 ```go
@@ -198,6 +236,8 @@ func main() {
 }
 ```
 
+### Adding entries
+
 You can add new entries to the map by using `index expressions`.
 
 ```go
@@ -216,6 +256,30 @@ func main() {
   fmt.Println(x) // map[citrus:[oranges limes] melons:[watermelons honeydew] tropical:[bananas mangoes]]
 }
 ```
+
+### Removing entries
+
+Use the built in function `delete` to remove contents from the map.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+  x := map[string][]string{
+    "citrus":   {"oranges", "limes"},
+    "tropical": {"bananas", "mangoes"},
+  }
+
+  delete(x, "tropical")
+
+  fmt.Println(x) // map[citrus:[oranges limes]]
+}
+
+```
+
+### Map Iteration
 
 Use `range` clause to iterate over the map.
 
@@ -241,26 +305,6 @@ Output:
 ```text
 citrus [oranges limes]
 tropical [bananas mangoes]
-```
-
-Use the built in function `delete` to remove contents from the map.
-
-```go
-package main
-
-import "fmt"
-
-func main() {
-  x := map[string][]string{
-    "citrus":   {"oranges", "limes"},
-    "tropical": {"bananas", "mangoes"},
-  }
-
-  delete(x, "tropical")
-
-  fmt.Println(x) // map[citrus:[oranges limes]]
-}
-
 ```
 
 ## Struct
@@ -304,6 +348,8 @@ Bond
 0 chocolate
 1 martini
 ```
+
+### Struct in map
 
 You can add struct elements to a map as shown below.
 
@@ -351,6 +397,8 @@ Output:
 James Bond {James Bond [chocolate martini]}
 Money Penney {Money Penney [strawberry vodka]}
 ```
+
+### Embedded fields
 
 A field declared with a type but no explicit field name is called an `embedded field`. An embedded field must be specified as a type name T.
 
@@ -403,6 +451,8 @@ Output:
 {{4 silver} true}
 ```
 
+### Promoted fields
+
 A field or method f of an embedded field in a struct x is called `promoted` if x.f is a legal selector that denotes that field or method f.
 
 You can access promoted fields either using the legal selector (or) using the field name.
@@ -442,6 +492,8 @@ Output:
 white
 white
 ```
+
+### Anonymous structures
 
 It is possible to declare structures without declaring a new type and these type of structures are called `anonymous structures`.
 
