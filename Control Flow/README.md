@@ -124,6 +124,24 @@ func main() {
 }
 ```
 
+The expression may be preceded by a simple statement, which executes before the expression is evaluated.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+  for i := 0; i <= 10; i++ {
+    if n := 2; i%n == 0 {
+      fmt.Printf("%v is an even number\n", i)
+    } else {
+      fmt.Printf("%v is an odd number\n", i)
+    }
+  }
+}
+```
+
 ## Switch statements
 
 In an expression switch, the switch expression is evaluated and the case expressions, which need not be constants, are evaluated left-to-right and top-to-bottom; the first one that equals the switch expression triggers execution of the statements of the associated case.

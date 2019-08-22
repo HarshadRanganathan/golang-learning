@@ -101,6 +101,58 @@ func main() {
 }
 ```
 
+Iterate the slice using the `range clause` in a for loop.
+
+```go
+package main
+
+import (
+  "fmt"
+)
+
+func main() {
+  x := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+
+  for i, v := range x {
+    fmt.Println(i, v)
+  }
+}
+```
+
+You can make a slice using the built-in `make` function which takes in the length and capacity of the slice.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+  x := make([]int, 10) // makes a slice of length and capacity 10
+
+  fmt.Println(len(x))
+  fmt.Println(cap(x))
+  fmt.Println(x)
+
+  // copy can handle source and destination slices that share the same underlying array
+
+  copy(x, []int{1, 2, 3, 4, 5}) // copies the data to the destination slice
+  fmt.Println(x)
+
+  copy(x[5:10], []int{6, 7, 8, 9, 10}) // copies the data to the destination slice utilizing the underlying capacity
+  fmt.Println(x)
+}
+```
+
+Output:
+
+```text
+10
+10
+[0 0 0 0 0 0 0 0 0 0]
+[1 2 3 4 5 0 0 0 0 0]
+[1 2 3 4 5 6 7 8 9 10]
+```
+
 ## Map
 
 A map is an unordered group of elements of one type, called the element type, indexed by a set of unique keys of another type, called the key type.
@@ -212,3 +264,218 @@ func main() {
 ```
 
 ## Struct
+
+A struct is a sequence of named elements, called fields, each of which has a name and a type.
+
+Within a struct, non-blank field names must be unique.
+
+```go
+package main
+
+import "fmt"
+
+type person struct {
+  first      string
+  last       string
+  favFlavors []string
+}
+
+func main() {
+  p := person{
+    first:      "James",
+    last:       "Bond",
+    favFlavors: []string{"chocolate", "martini"},
+  }
+
+  fmt.Println(p.first)
+  fmt.Println(p.last)
+
+  for i, v := range p.favFlavors {
+    fmt.Println(i, v)
+  }
+}
+```
+
+Output:
+
+```text
+James
+Bond
+0 chocolate
+1 martini
+```
+
+You can add struct elements to a map as shown below.
+
+```go
+package main
+
+import (
+  "fmt"
+  "strings"
+)
+
+type person struct {
+  first      string
+  last       string
+  favFlavors []string
+}
+
+func main() {
+  p1 := person{
+    first:      "James",
+    last:       "Bond",
+    favFlavors: []string{"chocolate", "martini"},
+  }
+
+  p2 := person{
+    first:      "Money",
+    last:       "Penney",
+    favFlavors: []string{"strawberry", "vodka"},
+  }
+
+  m := map[string]person{
+    strings.Join([]string{p1.first, p1.last}, " "): p1,
+    strings.Join([]string{p2.first, p2.last}, " "): p2,
+  }
+
+  for k, v := range m {
+    fmt.Println(k, v)
+  }
+}
+```
+
+Output:
+
+```text
+James Bond {James Bond [chocolate martini]}
+Money Penney {Money Penney [strawberry vodka]}
+```
+
+A field declared with a type but no explicit field name is called an `embedded field`. An embedded field must be specified as a type name T.
+
+```go
+package main
+
+import "fmt"
+
+type vehicle struct {
+  doors int
+  color string
+}
+
+type truck struct {
+  vehicle // embedded struct
+  fourWheel bool
+}
+
+type sedan struct {
+  vehicle // embedded struct
+  luxury  bool
+}
+
+func main() {
+  t := truck{
+    vehicle: vehicle{
+      doors: 2,
+      color: "white",
+    },
+    fourWheel: true,
+  }
+
+  s := sedan{
+    vehicle: vehicle{
+      doors: 4,
+      color: "silver",
+    },
+    luxury: true,
+  }
+
+  fmt.Println(t)
+  fmt.Println(s)
+}
+```
+
+Output:
+
+```text
+{{2 white} true}
+{{4 silver} true}
+```
+
+A field or method f of an embedded field in a struct x is called `promoted` if x.f is a legal selector that denotes that field or method f.
+
+You can access promoted fields either using the legal selector (or) using the field name.
+
+```go
+package main
+
+import "fmt"
+
+type vehicle struct {
+  doors int
+  color string
+}
+
+type truck struct {
+  vehicle   // embedded struct with promoted fields doors & color
+  fourWheel bool
+}
+
+func main() {
+  t := truck{
+    vehicle: vehicle{
+      doors: 2,
+      color: "white",
+    },
+    fourWheel: true,
+  }
+
+  fmt.Println(t.vehicle.color)
+  fmt.Println(t.color) // color is a promoted field hence can be accessed without the selector
+}
+```
+
+Output:
+
+```text
+white
+white
+```
+
+It is possible to declare structures without declaring a new type and these type of structures are called `anonymous structures`.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+  s := struct {
+    first     string
+    friends   map[string]int
+    favDrinks []string
+  }{
+    first: "James",
+    friends: map[string]int{
+      "Jack": 12,
+      "Ryan": 14,
+    },
+    favDrinks: []string{"martini", "beer"},
+  }
+
+  fmt.Println(s)
+  fmt.Println(s.first)
+  fmt.Println(s.friends)
+  fmt.Println(s.favDrinks)
+}
+```
+
+Output:
+
+```text
+{James map[Jack:12 Ryan:14] [martini beer]}
+James
+map[Jack:12 Ryan:14]
+[martini beer]
+```
