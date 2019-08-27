@@ -3,3 +3,5 @@
 [Control Flow](Control%20Flow/README.md)
 
 [Composite Data Types](Composite%20Data%20Types/README.md)
+
+[Functions](Functions/README.md)
