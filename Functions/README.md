@@ -15,13 +15,6 @@ package main
 
 import "fmt"
 
-func main() {
-  functionWithNoParameters()
-  functionWithParameters("Function with parameters called")
-  res := functionWithParametersAndResult("Function with parameters and result called")
-  fmt.Println(res)
-}
-
 func functionWithNoParameters() {
   fmt.Println("Function with no parameters called")
 }
@@ -32,6 +25,15 @@ func functionWithParameters(s string) {
 
 func functionWithParametersAndResult(s string) string {
   return s
+}
+
+func main() {
+  functionWithNoParameters()
+
+  functionWithParameters("Function with parameters called")
+
+  res := functionWithParametersAndResult("Function with parameters and result called")
+  fmt.Println(res)
 }
 ```
 
@@ -46,13 +48,13 @@ package main
 
 import "fmt"
 
-func main() {
-  functionWithVariadicParameters(1, 2, 3)
-}
-
 func functionWithVariadicParameters(x ...int) {
   fmt.Println("Function with variadic parameters called")
   fmt.Println(x) // [1 2 3]
+}
+
+func main() {
+  functionWithVariadicParameters(1, 2, 3)
 }
 ```
 
@@ -63,14 +65,14 @@ package main
 
 import "fmt"
 
-func main() {
-  x := []int{1, 2, 3}
-  functionWithVariadicParameters(x...)
-}
-
 func functionWithVariadicParameters(x ...int) {
   fmt.Println("Function with variadic parameters called")
   fmt.Println(x) // [1 2 3]
+}
+
+func main() {
+  x := []int{1, 2, 3}
+  functionWithVariadicParameters(x...)
 }
 ```
 
@@ -83,17 +85,17 @@ package main
 
 import "fmt"
 
-func main() {
-  defer f1()
-  f2()
-}
-
 func f1() {
   fmt.Println("f1")
 }
 
 func f2() {
   fmt.Println("f2")
+}
+
+func main() {
+  defer f1()
+  f2()
 }
 ```
 
