@@ -14,6 +14,8 @@
 
 [Type conversion](#type-conversion)
 
+[Type assertion](#type-assertion)
+
 [String formatting](#string-formatting)
 
 ## Variable declarations
@@ -204,6 +206,33 @@ func main() {
   fmt.Printf("%T\n", y) // int
   fmt.Println(y) // 42
 }
+```
+
+## Type assertion
+
+For an expression x of interface type and a type T, `x.(T)` asserts that x is not nil and that the value stored in x is of type T.
+
+```go
+package main
+
+import "fmt"
+
+var x interface{} = 10
+
+func main() {
+  v1, ok1 := x.(int) // assert if 'x' is of type 'int'. 'ok' is true if the assertion holds
+  fmt.Println(v1, ok1)
+
+  v2, ok2 := x.(float32)
+  fmt.Println(v2, ok2)
+}
+```
+
+Output:
+
+```text
+10 true
+0 false
 ```
 
 ## String formatting

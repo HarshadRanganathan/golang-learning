@@ -14,6 +14,8 @@
 
 [Switch statements](#switch-statements)
 
+- [Type assertion](#type-assertion)
+
 [Fallthrough statements](#fallthrough-statements)
 
 ## For statements
@@ -184,6 +186,32 @@ func main() {
   }
 }
 
+```
+
+### Type assertion
+
+Type assertions can be done in switch statements.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+  var i interface{} = 2
+  switch i.(type) {
+  case int:
+    fmt.Println("Value is of type integer")
+  default:
+    fmt.Println("Unknown type")
+  }
+}
+```
+
+Output:
+
+```text
+Value is of type integer
 ```
 
 ## Fallthrough statements
