@@ -40,3 +40,10 @@ func main() {
   fmt.Println(p.speak())
 }
 ```
+
+Output:
+
+```text
+James Bond
+I am James Bond
+```
