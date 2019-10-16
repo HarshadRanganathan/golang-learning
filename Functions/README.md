@@ -25,22 +25,38 @@ func functionWithNoParameters() {
   fmt.Println("Function with no parameters called")
 }
 
+func functionWithNoParametersAndMultipleResult() (int, string) {
+  return 30, "James Bond"
+}
+
 func functionWithParameters(s string) {
   fmt.Println(s)
 }
 
-func functionWithParametersAndResult(s string) string {
+func functionWithParametersAndSingleResult(s string) string {
   return s
 }
 
 func main() {
   functionWithNoParameters()
 
+  age, name := functionWithNoParametersAndMultipleResult()
+  fmt.Printf("Function with no parameters and multiple result called: %v %v\n", age, name)
+
   functionWithParameters("Function with parameters called")
 
-  res := functionWithParametersAndResult("Function with parameters and result called")
+  res := functionWithParametersAndSingleResult("Function with parameters and single result called")
   fmt.Println(res)
 }
+```
+
+Output:
+
+```text
+Function with no parameters called
+Function with no parameters and multiple result called: 30 James Bond
+Function with parameters called
+Function with parameters and single result called
 ```
 
 A function can return another function.
