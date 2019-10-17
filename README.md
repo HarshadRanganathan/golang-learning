@@ -12,7 +12,7 @@
 
 [Json](Json/README.md)
 
-[Packages](Packages.md)
+[Packages](Packages/README.md)
 
 Credits: [Learn How To Code: Google's Go (golang) Programming Language](https://www.udemy.com/course/learn-how-to-code/) by Todd McLeod
 
