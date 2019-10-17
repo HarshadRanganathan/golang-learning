@@ -10,6 +10,8 @@
 
 [Pointers](Pointers/README.md)
 
+[Json](Json/README.md)
+
 Credits: [Learn How To Code: Google's Go (golang) Programming Language](https://www.udemy.com/course/learn-how-to-code/) by Todd McLeod
 
 References: [Go Programming Language Specification](https://golang.org/ref/spec)
