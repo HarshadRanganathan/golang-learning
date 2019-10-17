@@ -10,6 +10,8 @@
 
 - [Slice Iteration](#slice-iteration)
 
+- [Slice Sort](#slice-sort)
+
 - [Memory allocation](#memory-allocation)
 
 [Map](#map)
@@ -31,6 +33,8 @@
 - [Promoted fields](#promoted-fields)
 
 - [Anonymous structures](#anonymous-structures)
+
+- [Struct sort](#struct-sort)
 
 ## Array
 
@@ -151,6 +155,39 @@ func main() {
     fmt.Println(i, v)
   }
 }
+```
+
+### Slice Sort
+
+Package sort provides primitives for sorting slices and user-defined collections.
+
+``Ints`` sorts a slice of ints in increasing order.
+
+``Strings`` sorts a slice of strings in increasing order.
+
+```go
+package main
+
+import (
+  "fmt"
+  "sort"
+)
+
+func main() {
+  num := []int{45, 32, 80, 90, 34, 12, 02}
+  sort.Ints(num)
+  fmt.Println(num)
+
+  s := []string{"Money Penny", "James Bond"}
+  sort.Strings(s)
+  fmt.Println(s)
+}
+```
+
+Output:
+```text
+[2 12 32 34 45 80 90]
+[James Bond Money Penny]
 ```
 
 ### Memory allocation
@@ -530,4 +567,47 @@ Output:
 James
 map[Jack:12 Ryan:14]
 [martini beer]
+```
+
+### Struct sort
+
+You can sort a list of collections by using `Sort` function. It expects a type that satisfies [sort.Interface](https://golang.org/pkg/sort/#Interface).
+
+```go
+package main
+
+import (
+  "fmt"
+  "sort"
+)
+
+type person struct {
+  firstName string
+  lastName  string
+  age       int
+}
+
+// implements sort.Interface
+type sortByAge []person
+
+func (a sortByAge) Len() int           { return len(a) }
+func (a sortByAge) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a sortByAge) Less(i, j int) bool { return a[i].age < a[j].age }
+
+func main() {
+  p1 := person{firstName: "Kody", lastName: "Hunt", age: 34}
+  p2 := person{firstName: "Kirsten", lastName: "Blackwell", age: 22}
+  p3 := person{firstName: "Bernard", lastName: "Wheatley", age: 45}
+
+  persons := []person{p1, p2, p3}
+  sort.Sort(sortByAge(persons))
+
+  fmt.Println(persons)
+}
+```
+
+Output:
+
+```text
+[{Kirsten Blackwell 22} {Kody Hunt 34} {Bernard Wheatley 45}]
 ```
