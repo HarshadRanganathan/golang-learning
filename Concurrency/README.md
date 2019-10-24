@@ -8,6 +8,8 @@
 
 - [Atomic](#atomic)
 
+- [Build package with race detection](#build-package-with-race-detection)
+
 ## Concurrency
 
 ### Goroutine
@@ -240,4 +242,22 @@ Output:
 ```text
 $ go run --race hello.go
 2
+```
+
+### Build package with race detection
+
+Build compiles the packages named by the import paths, along with their dependencies.
+
+When compiling a single main package, build writes the resulting executable to an output file.
+
+`-race` flag enables race detection
+
+```bash
+go build --race
+```
+
+You can then run the resulting executable.
+
+```bash
+./test.exe
 ```
