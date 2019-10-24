@@ -2,6 +2,8 @@
 
 - [Selectors](#selectors)
 
+- [Methods and pointer indirection](#methods-and-pointer-indirection)
+
 ## Pointers
 
 For an operand x of type T, the address operation &x generates a pointer of type *T to x. The operand must be addressable, that is, either a variable, pointer indirection, or slice indexing operation.
@@ -55,4 +57,49 @@ func main() {
   }
   name(&p)
 }
+```
+
+### Methods and pointer indirection
+
+Methods with pointer receivers take either value or pointers.
+
+Functions with pointer argument take only pointers.
+
+```go
+package main
+
+import "fmt"
+
+type circle struct {
+  r float64
+}
+
+/* Methods with pointer receivers take either value or pointers
+ */
+func (c *circle) area() float64 {
+  return 3.14 * c.r // c*r is a shorthand for (*c)*r
+}
+
+/* Functions with pointer argument take only pointers
+ */
+func area(c *circle) float64 {
+  return 3.14 * c.r
+}
+
+func main() {
+  c := circle{r: 20}
+
+  fmt.Println(area(&c)) // accepts only pointer
+
+  fmt.Println(c.area()) // c.area() is a shorthand for (&c).area()
+  fmt.Println((&c).area())
+}
+```
+
+Output:
+
+```text
+62.800000000000004
+62.800000000000004
+62.800000000000004
 ```
