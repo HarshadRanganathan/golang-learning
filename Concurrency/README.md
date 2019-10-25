@@ -8,6 +8,12 @@
 
 - [Atomic](#atomic)
 
+- [Channels](#channels)
+
+  - [Range clause](#range-clause)
+
+  - [Select statements](#select-statements)
+
 - [Build package with race detection](#build-package-with-race-detection)
 
 ## Concurrency
@@ -242,6 +248,158 @@ Output:
 ```text
 $ go run --race hello.go
 2
+```
+
+### Channels
+
+A channel provides a mechanism for concurrently executing functions to communicate by sending and receiving values of a specified element type.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+  c := make(chan int)
+  go func() { c <- 42 }() // send to channel
+  fmt.Println(<-c) // receive from channel
+}
+```
+
+The optional <- operator specifies the channel direction, send or receive. If no direction is given, the channel is bidirectional. 
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+  cs := make(chan<- int) // send only channel
+  go func() { cs <- 42 }()
+  fmt.Println(<-cs) // error - receive from send only type
+
+  cr := make(<-chan int)   // receive only channel
+  go func() { cr <- 42 }() // error - send to receive only type
+  fmt.Println(<-cr)
+}
+```
+
+Below is an example of how to use send and receive channels to perform concurrent operations.
+
+```go
+package main
+
+import "fmt"
+
+func send(c chan<- int) {
+  c <- 42
+}
+
+func receive(c <-chan int) {
+  fmt.Println(<-c)
+}
+
+func main() {
+  c := make(chan int)
+  go send(c)
+  receive(c)
+}
+```
+
+#### Range clause
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+  c := make(chan int)
+
+  go func() {
+    for i := 0; i < 5; i++ {
+      c <- i
+    }
+    close(c) // channel needs to be closed to indicate no more values will be sent to it
+  }()
+
+  for v := range c {
+    fmt.Println(v)
+  }
+}
+```
+
+Output:
+
+```text
+0
+1
+2
+3
+4
+```
+
+#### Select statements
+
+A "select" statement chooses which of a set of possible send or receive operations will proceed. It looks similar to a "switch" statement but with the cases all referring to communication operations.
+
+Result is a set of channels to receive from or send to, and the corresponding values to send.
+
+```go
+package main
+
+import "fmt"
+
+func publish(odd chan int, even chan int, quit chan int) {
+  for i := 0; i < 10; i++ {
+    if i%2 == 0 {
+      even <- i
+    } else {
+      odd <- i
+    }
+  }
+  close(quit)
+}
+
+func main() {
+  odd := make(chan int)
+  even := make(chan int)
+  quit := make(chan int)
+
+  go publish(odd, even, quit)
+
+  for {
+    select {
+    case o := <-odd:
+      fmt.Println("Received odd value: ", o)
+    case e := <-even:
+      fmt.Println("Received even value: ", e)
+    case _, ok := <-quit:
+      if !ok { // channel is closed
+        close(odd)
+        close(even)
+        fmt.Println("Received quit")
+      }
+      return
+    }
+  }
+}
+```
+
+Output:
+
+```text
+Received even value:  0
+Received odd value:  1
+Received even value:  2
+Received odd value:  3
+Received even value:  4
+Received odd value:  5
+Received even value:  6
+Received odd value:  7
+Received even value:  8
+Received odd value:  9
+Received quit
 ```
 
 ### Build package with race detection
