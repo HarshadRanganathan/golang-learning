@@ -199,6 +199,63 @@ f2
 f1
 ```
 
+Deferred function's arguments are evaluated when the defer statement is evaluated.
+
+```go
+package main
+
+import "fmt"
+
+func f1(i int) {
+  fmt.Println("f1: ", i)
+}
+
+func f2() {
+  fmt.Println("f2")
+}
+
+func main() {
+  i := 1
+  defer f1(i) // 'i' is evaluated when f1 is deferred
+  i++
+  f2()
+}
+```
+
+Output:
+
+```text
+f2
+f1:  1
+```
+
+Deferred function calls are executed in Last In First Out Order.
+
+```go
+package main
+
+import "fmt"
+
+func f(i int) {
+  fmt.Println(i)
+}
+
+func main() {
+  for i := 0; i < 3; i++ {
+    defer f(i)
+  }
+
+}
+```
+
+Output:
+
+```text
+2
+1
+0
+```
+
 ### Method Declarations
 
 A method is a function with a receiver. A method declaration binds an identifier, the method name, to a method, and associates the method with the receiver's base type.
