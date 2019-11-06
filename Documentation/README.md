@@ -61,3 +61,12 @@ $ godoc -http=:6060
 Open your browser and access your package docs at ``http://localhost:6060/pkg/<package_name>``
 
 ![godoc](godoc.png?raw=true)
+
+Any Example functions also get shown in your godocs.
+
+```go
+func ExampleDivide() {
+	fmt.Println(Divide(10, 2))
+	// Output: 5
+}
+```
