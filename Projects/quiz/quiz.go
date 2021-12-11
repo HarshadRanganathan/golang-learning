@@ -8,11 +8,13 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 )
 
 func main() {
 
 	csvFilename := flag.String("csv", "problems.csv", "a csv file in the format of 'question,answer'")
+	timeLimit := flag.Int("timeLimit", 30, "time limit for the quiz in seconds")
 	flag.Parse()
 
 	f, err := os.Open(*csvFilename)
@@ -24,11 +26,15 @@ func main() {
 	var correct int
 	var lineCounter int
 
+	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
+
 	for {
+
 		record, err := r.Read()
 
 		if err == io.EOF {
-			break
+			fmt.Printf("\nYou scored %d out of %d", correct, lineCounter)
+			return
 		}
 		if err != nil {
 			log.Fatal(err)
@@ -38,15 +44,24 @@ func main() {
 		lineCounter++
 
 		fmt.Printf("\nProblem: %v = ", p.q)
-		var input string
-		fmt.Scanln(&input)
 
-		if input == p.a {
-			correct++
+		answerCh := make(chan string)
+		go func() {
+			var input string
+			fmt.Scanln(&input)
+			answerCh <- input
+		}()
+
+		select {
+		case <-timer.C:
+			fmt.Printf("\nYou scored %d out of %d", correct, lineCounter)
+			return
+		case input := <-answerCh:
+			if input == p.a {
+				correct++
+			}
 		}
 	}
-
-	fmt.Printf("You scored %d out of %d", correct, lineCounter)
 }
 
 func parseRecord(record []string) problem {
